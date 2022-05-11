@@ -58,6 +58,10 @@ class TodoList {
     if (targetTodoItemIndex === -1) return;
     this._items.splice(targetTodoItemIndex, 1);
   };
+
+  get items() {
+    return this._items;
+  }
 }
 
 export default TodoList;
