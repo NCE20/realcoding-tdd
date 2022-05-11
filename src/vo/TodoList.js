@@ -1,4 +1,4 @@
-import { makeObservable, observable } from "mobx";
+import { makeObservable, observable, action, computed } from "mobx";
 
 class TodoList {
   /*
@@ -12,40 +12,17 @@ class TodoList {
     makeObservable(this, {
       _items: observable,
     });
-    this._items = items;
+
+    this._items = items || [];
     this._date = date;
   }
 
-  removeTodoItem = (todoId) => {
-    const targetTodoItemIndex = this._items.findIndex(
-      (todo) => todo.id === todoId
-    );
-    if (targetTodoItemIndex === - 1) return;
-    this._items.splice(targetTodoItemIndex, 1);
-  }
+  _completedFilter = (todoItem) => todoItem.completed;
+  _notCompletedFilter = (todoItem) => !todoItem.completed;
 
-  pushTodoItem = (todoItem) => {
-    this._items.push(todoItem);
-  }
-
-  isPrevItem = (todoId) => {
-    const targetTodoItemIndex = this._items.findIndex(
-      (todo) => todo.id === todoId
-    );
-    if (targetTodoItemIndex === - 1) return;
-
-  }
-
-  get items() {
-    return this._items;
-  }
-
-  _equalsDayFilter = (todoItem) => todoItem.equalsDayOfCreateAt(this._date);
-  _notEqualsDayFilter = (todoItem) => !todoItem.equalsDayOfCreateAt(this._date);
-
-  _completedFilter = (todoItem) => todoItem._completed;
-  _notCompletedFilter = (todoItem) => !todoItem._completed;
-
+  _equalsDayFilter = (todoItem) => todoItem.equalsDayOfCreatedAt(this._date);
+  _notEqualsDayFilter = (todoItem) =>
+    !todoItem.equalsDayOfCreatedAt(this._date);
 
   get equalsDayItems() {
     return this._items.filter(this._equalsDayFilter);
@@ -61,6 +38,30 @@ class TodoList {
 
   get notEqualsDayItems() {
     return this._items.filter(this._notEqualsDayFilter);
+  }
+
+  get notEqualsDayAndCompletedItems() {
+    return this.notEqualsDayItems.filter(this._completedFilter);
+  }
+
+  get notEqualsDayAndNotCompletedItems() {
+    return this.notEqualsDayItems.filter(this._notCompletedFilter);
+  }
+
+  pushTodoItem = (todoItem) => {
+    this._items.push(todoItem);
+  };
+
+  removeTodoItem = (todoId) => {
+    const targetTodoItemIndex = this._items.findIndex(
+      (todo) => todo.id === todoId
+    );
+    if (targetTodoItemIndex === -1) return;
+    this._items.splice(targetTodoItemIndex, 1);
+  };
+
+  get items() {
+    return this._items;
   }
 }
 
