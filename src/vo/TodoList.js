@@ -12,6 +12,7 @@ class TodoList {
     makeObservable(this, {
       _items: observable,
     });
+
     this._items = items || [];
     this._date = date;
   }
