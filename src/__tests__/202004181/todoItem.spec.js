@@ -1,4 +1,4 @@
-import TodoItem from "../vo/TodoItem";
+import TodoItem from "../../vo/TodoItem";
 
 describe("할 일을 만들 수 있다.", () => {
   test("todo item 생성하기", () => {
@@ -10,7 +10,7 @@ describe("할 일을 만들 수 있다.", () => {
 describe("할 일을 업데이트 할 수 있다.", () => {
   test("todo item 업데이트하기", () => {
     const todoItem = new TodoItem(1, '오늘은 술 먹는날');
-    todoItem.updateTsk('오늘은 그냥 안마실래')
+    todoItem.updateTask('오늘은 그냥 안마실래')
     expect(todoItem.task).toEqual('오늘은 그냥 안마실래');
   });
 });
@@ -37,18 +37,18 @@ describe("할 일을 완료로 생성할 수 있다", () => {
 });
 
 describe("할 일에 날짜가 들어간다.", () => {
-  test("todo itemd이 오늘 만들었으면, isToday가 true이다", () => {
+  test("todo item이 오늘 만들었으면, isToday가 true이다", () => {
     const sourceDate = new Date();
     const targetDate = new Date();
     const todoItem = new TodoItem(1, '오늘은 술 먹는날', sourceDate);
 
-    expect(todoItem.equalsDayOfCreateAt(targetDate)).toBeTruthy();
+    expect(todoItem.equalsDayOfCreatedAt(targetDate)).toBeTruthy();
   });
-  test("todo itemd이 어제 만들었으면 isToday가 false이다", () => {
+  test("todo item이 어제 만들었으면 isToday가 false이다", () => {
     const sourceDate = new Date('2022-05-08T10:10:00:00');
     const targetDate = new Date('2022-05-09T10:10:00:00');
     const todoItem = new TodoItem(2, '오늘은 술 먹는날', sourceDate);
 
-    expect(todoItem.equalsDayOfCreateAt(targetDate)).toBeFalsy();
+    expect(todoItem.equalsDayOfCreatedAt(targetDate)).toBeFalsy();
   });
 });
